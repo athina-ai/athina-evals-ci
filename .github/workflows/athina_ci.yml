@@ -12,6 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set the OPENAI_API_KEY secret as an environment variable
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -29,4 +33,4 @@ jobs:
           echo "Prepare your dataset here if necessary"
 
       - name: Run Athina Evaluation and Validation Script
-        run: python run_athina_evals.py
+        run: python .github/scripts/run_athina_evals.py
