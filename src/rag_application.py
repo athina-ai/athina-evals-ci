@@ -13,7 +13,7 @@ from llama_index import VectorStoreIndex, ServiceContext
 load_dotenv()
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
-class Application(): 
+class RagApplication(): 
     
     def __init__(self, openai_api_key):
         openai.api_key = OPENAI_API_KEY
@@ -40,9 +40,9 @@ class Application():
             text = c.node.get_text()
             contexts.append(text)
 
-        return contexts, response
+        return "".join(contexts), response
     
 if __name__ == "__main__":
     # Initialize the application
-    app = Application(openai_api_key=OPENAI_API_KEY)
+    app = RagApplication(openai_api_key=OPENAI_API_KEY)
     print(app.generate_response("How much equity does YC take?"))

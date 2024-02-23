@@ -20,7 +20,8 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install athina  # Install Athina and other project dependencies as needed
+          pip install -r requirements.txt  # Install project dependencies
+          pip install athina  # Install Athina Evals
 
       - name: Prepare Dataset
         run: |
@@ -29,6 +30,6 @@ jobs:
           echo "Prepare your dataset here if necessary"
         
       - name: Run Athina Evaluation and Validation Script
-        run: python .github/scripts/run_athina_evals.py
+        run: python -m evaluations.run_athina_evals
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
