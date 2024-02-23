@@ -22,6 +22,8 @@ def load_data():
             "expected_response": "Y Combinator takes a 7% equity stake in companies in return for $125,000 on a post-money SAFE, and a 1.5% equity stake in companies participating in the YC Fellowship Program in exchange for a $20,000 investment.",
         }
     ]
+    for item in raw_data:
+        item['context'], item['response'] = app.generate_response(item['query'])
     
     # # or read from file
     # with open('evaluations/golden_dataset.jsonl', 'r') as file:
