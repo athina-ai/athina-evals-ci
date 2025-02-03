@@ -1,35 +1,37 @@
 name: CI with Athina Evals
-
 on:
-  push:
-    branches:
-      - main  # Trigger CI on pushes to main branch only
+ # Trigger CI on PRs to main
+ pull_request:
+   branches:
+     - main
 
 jobs:
-  evaluate:
-    runs-on: ubuntu-latest
+ evaluate:
+   runs-on: ubuntu-latest
+   steps:
+     # Check out repository code
+     - uses: actions/checkout@v3
 
-    steps:
-      - uses: actions/checkout@v3
+     # Set up Python environment
+     - name: Set up Python
+       uses: actions/setup-python@v4
+       with:
+         python-version: '3.9'
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
+     # Install required packages
+     - name: Install Dependencies
+       run: |
+         python -m pip install --upgrade pip
+         pip install -r requirements.txt  # Project dependencies
+         pip install athina  # Evaluation framework
+     
+     # Optional dataset preparation step
+     - name: Prepare Dataset
+       run: |
+         echo "Prepare your dataset here if necessary"
 
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Install project dependencies
-          pip install athina  # Install Athina Evals
-
-      - name: Prepare Dataset
-        run: |
-          # If your dataset is not static, prepare it here
-          # For example, download the dataset or build it from available data
-          echo "Prepare your dataset here if necessary"
-        
-      - name: Run Athina Evaluation and Validation Script
-        run: python -m evaluations.run_athina_evals
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+     # Run evaluation with OpenAI API access
+     - name: Run Athina Evaluation
+       run: python -m evaluations.run_athina_evals
+       env:
+         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
